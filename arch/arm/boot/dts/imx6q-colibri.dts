@@ -16,7 +16,7 @@
 
 #include <dt-bindings/interrupt-controller/irq.h>
 #include "imx6q.dtsi"
-#include "imx6qdl-wandboard.dtsi"
+#include "imx6qdl-colibri.dtsi"
 
 / {
 	model = "Wandboard Quad based on Freescale i.MX6 Quad";
