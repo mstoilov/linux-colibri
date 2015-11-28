@@ -343,6 +343,17 @@ reference manual.
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_hog_1>;
 
+	uart1 {
+		pinctrl_uart1_2: uart1grp-2 { /* DTE mode */
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT10__UART1_TX_DATA 0x1b0b1
+				MX6QDL_PAD_CSI0_DAT11__UART1_RX_DATA 0x1b0b1
+				MX6QDL_PAD_EIM_D19__UART1_CTS_B 0x1b0b1
+				MX6QDL_PAD_EIM_D20__UART1_RTS_B 0x1b0b1
+			>;
+		};
+	};
+
 	uart2 {
 		pinctrl_uart2_3: uart2grp-3 { /* DTE mode */
 			fsl,pins = <
@@ -467,7 +478,8 @@ reference manual.
 
 &uart1 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart1_1>;
+	pinctrl-0 = <&pinctrl_uart1_2>;
+	fsl,uart-has-rtscts;
 	status = "okay";
 };
 
