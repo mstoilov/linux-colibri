@@ -10,6 +10,7 @@
  */
 
 #include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
 
 / {
 	aliases {
@@ -68,8 +69,25 @@
 		};
 	};
 
+	gpio-keys {
+		compatible = "gpio-keys";
+		power {
+			label = "Power Button";
+			gpios = <&gpio3 11 GPIO_ACTIVE_HIGH>;
+			linux,code = <KEY_POWER>;
+			gpio-key,wakeup;
+		};
+	};
+
+	gpio-poweroff {
+	    compatible = "gpio-poweroff";
+	    gpios = <&gpio3 27 GPIO_ACTIVE_LOW>;
+	};
+
 	gpio-edm {
 		compatible = "gpio-edm";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_gpio>;
 
 		gpio_p255 {
 			label = "GPIO_P255";
@@ -77,21 +95,9 @@
 			dir   = "in";
 		};
 
-		gpio_p256 {
-			label = "GPIO_P256";
-			gpios = <&gpio3 11 1>;
-			dir   = "in";
-		};
-
 		gpio_p257 {
 			label = "GPIO_P257";
 			gpios = <&gpio3 10 1>;
-			dir   = "in";
-		};
-
-		gpio_p258 {
-			label = "GPIO_P258";
-			gpios = <&gpio3 27 1>;
 			dir   = "in";
 		};
 
@@ -128,7 +134,8 @@
 		gpio_p264 {
 			label = "GPIO_P264";
 			gpios = <&gpio7 8 1>;
-			dir   = "in";
+			dir   = "out";
+			default-state = "off";
 		};
 	};
 
@@ -306,6 +313,37 @@
 
 };
 
+/*
+	Added here for convinience.
+
+	PAD_CTL_HYS                     (1 << 16)
+	
+	PAD_CTL_PUS_100K_DOWN           (0 << 14)
+	PAD_CTL_PUS_47K_UP              (1 << 14)
+	PAD_CTL_PUS_100K_UP             (2 << 14)
+	PAD_CTL_PUS_22K_UP              (3 << 14)
+	
+	PAD_CTL_PUE                     (1 << 13)
+	PAD_CTL_PKE                     (1 << 12)
+	PAD_CTL_ODE                     (1 << 11)
+	
+	PAD_CTL_SPEED_LOW               (1 << 6)
+	PAD_CTL_SPEED_MED               (2 << 6)
+	PAD_CTL_SPEED_HIGH              (3 << 6)
+	
+	PAD_CTL_DSE_DISABLE             (0 << 3)
+	PAD_CTL_DSE_240ohm              (1 << 3)
+	PAD_CTL_DSE_120ohm              (2 << 3)
+	PAD_CTL_DSE_80ohm               (3 << 3)
+	PAD_CTL_DSE_60ohm               (4 << 3)
+	PAD_CTL_DSE_48ohm               (5 << 3)
+	PAD_CTL_DSE_40ohm               (6 << 3)
+	PAD_CTL_DSE_34ohm               (7 << 3)
+	
+	PAD_CTL_SRE_FAST                (1 << 0)
+	PAD_CTL_SRE_SLOW                (0 << 0)
+*/
+
 &iomuxc {
 	pinctrl-names = "default";
     pinctrl-0 = <&pinctrl_hog_1>;
@@ -328,10 +366,8 @@
 
 		pinctrl_gpio: gpiogrp {
 			fsl,pins = <
-				MX6QDL_PAD_EIM_DA12__GPIO3_IO12   0x4001b0b5 /* GPIO3_12 EDM pin 255 */
 				MX6QDL_PAD_EIM_DA11__GPIO3_IO11   0x4001b0b5 /* GPIO3_11 EDM pin 256 */
 				MX6QDL_PAD_EIM_DA10__GPIO3_IO10   0x4001b0b5 /* GPIO3_10 EDM pin 257 */
-				MX6QDL_PAD_EIM_D27__GPIO3_IO27    0x4001b0b5 /* GPIO3_27 EDM pin 258 */
 				MX6QDL_PAD_EIM_D26__GPIO3_IO26    0x4001b0b5 /* GPIO3_26 EDM pin 259 */
 				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31   0x4001b0b5 /* GPIO6_31 EDM pin 260 */
 				MX6QDL_PAD_EIM_DA8__GPIO3_IO08    0x4001b0b5 /* GPIO3_8  EDM pin 261 */
@@ -517,6 +553,15 @@
 				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
 			>;
 		};
+		
+		pinctrl_gpio_keys: gpio_keysgrp {
+			fsl,pins = <
+				/* Power Button */
+				MX6QDL_PAD_EIM_DA11__GPIO3_IO11   	0x1b0b0 /* GPIO3_11 EDM pin 256 */
+				MX6QDL_PAD_EIM_D27__GPIO3_IO27    	0x1b0b0 /* GPIO3_27 EDM pin 258 */
+			>;
+		};
+		
 	};
 };
 
@@ -701,4 +746,8 @@
 
 		linux,wakeup;
 	};
+};
+
+&pinctrl_gpio_keys {
+	status = "okay";
 };
