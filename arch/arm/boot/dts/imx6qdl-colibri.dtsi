@@ -311,6 +311,12 @@
 		flip_y=<0>;
 	};
 
+	rtc: pcf8563@51 {
+		compatible = "nxp,pcf8563";
+		reg = <0x51>;
+	};
+
+
 };
 
 /*
