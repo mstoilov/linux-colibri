@@ -314,6 +314,8 @@
 	rtc: pcf8563@51 {
 		compatible = "nxp,pcf8563";
 		reg = <0x51>;
+		interrupt-parent = <&gpio6>;
+		interrupts = <16 1>;
 	};
 
 
@@ -379,6 +381,7 @@
 				MX6QDL_PAD_EIM_DA8__GPIO3_IO08    0x4001b0b5 /* GPIO3_8  EDM pin 261 */
 				MX6QDL_PAD_GPIO_19__GPIO4_IO05    0x4001b0b5 /* GPIO4_5  EDM pin 263 */
 				MX6QDL_PAD_SD3_RST__GPIO7_IO08    0x4001b0b5 /* GPIO7_8  EDM pin 264 */
+				MX6QDL_PAD_NANDF_CS3__GPIO6_IO16  0x000b0    /* GPIO6_16 EDM pin 96  */
 			>;
 		};
 
@@ -756,4 +759,8 @@
 
 &pinctrl_gpio_keys {
 	status = "okay";
+};
+
+&snvs_rtc {
+	status = "disabled";
 };
